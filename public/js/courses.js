@@ -2,6 +2,7 @@
 
 ////////////AUTH STUFF
 
+
 var token = sessionStorage.getItem("authHeader");
 
 var postCourseRoute = "/teachers/archive";
@@ -13,7 +14,7 @@ var config = {
 //////////////
 
 function postCourseRequest(courseName){
- axios.post(postCourseRoute,{
+  axios.post(postCourseRoute,{
     course: courseName
   }, {
        headers :{
@@ -28,10 +29,19 @@ function postCourseRequest(courseName){
 };
 
 function classListRequest(){
-  axios.get('/classlist/teacher', config)
+   axios.get('/classlist/teacher', config)
      .then(function(response){
-       console.log(response.data); // ex.: { user: 'Your User'}
+       console.log(JSON.stringify(response.data)); // ex.: { user: 'Your User'}
        console.log(response.status); // ex.: 200
+
+      var cList = response.data.classList;
+       for(var i = 0; i < cList.length; i++){
+        var listItem = createNewTaskElement(cList[i]);
+         //Append listItem to incompleteTasksHolder
+         incompleteTasksHolder.appendChild(listItem);
+         bindTaskEvents(listItem, taskCompleted);
+       }
+
 
      });
 }
@@ -61,14 +71,14 @@ var createNewTaskElement = function(taskString) {
   //button.edit
   var editButton = document.createElement("button");
   //button.delete
-  var deleteButton = document.createElement("button");
+   var deleteButton = document.createElement("button");
 
       //Each element needs modifying
 
   checkBox.type = "checkbox";
   editInput.type = "text";
 
-  editButton.innerText = "Edit";
+   editButton.innerText = "Start Session";
   editButton.className = "edit";
   deleteButton.innerText = "Delete";
   deleteButton.className = "delete";
@@ -86,6 +96,14 @@ var createNewTaskElement = function(taskString) {
 
 
   return listItem;
+}
+
+var addCourse = function (){
+  axios.get('/classlist/teacher', config)
+     .then(function(response){
+       console.log(response.data); // ex.: { user: 'Your User'}
+       console.log(response.status); // ex.: 200
+     });
 }
 
 // Add a new task
@@ -110,7 +128,23 @@ var editTask = function() {
   var editInput = listItem.querySelector("input[type=text]")
   var label = listItem.querySelector("label");
 
-  var containsClass = listItem.classList.contains("editMode");
+  var classSelected = label.innerText.toString().replace(/\s+/, "").toLowerCase();
+
+  //var ran5 = 10000+Math.round(Math.floor()*90000);
+
+
+
+  var num = Math.floor(Math.random() * (99999 - 9999)) + 9999;
+  console.log("ITEM WAS  " + classSelected + "  random " + num);
+  var classObject = {
+    classname: classSelected,
+    id: num
+  }
+  sessionStorage.setItem("classObject", JSON.stringify(classObject));
+
+  window.location.href="/session.html";
+
+/*  var containsClass = listItem.classList.contains("editMode");
     //if the class of the parent is .editMode
   if(containsClass) {
       //switch from .editMode
@@ -120,10 +154,10 @@ var editTask = function() {
       //Switch to .editMode
       //input value becomes the label's text
     editInput.value = label.innerText;
-  }
+  }*/
 
     // Toggle .editMode on the parent
-  listItem.classList.toggle("editMode");
+  //listItem.classList.toggle("editMode");
 
 }
 
@@ -196,11 +230,4 @@ for(var i = 0; i <  completedTasksHolder.children.length; i++) {
     // bind events to list item's children (taskIncompleted)
   bindTaskEvents(completedTasksHolder.children[i], taskIncomplete);
 
-}
-
-
-function loadTasks(){
-    classListRequest().then((res) =>{
-      console.log(res);
-    });
 }

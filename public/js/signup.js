@@ -1,15 +1,4 @@
-/*
 
-HTML FORM TAKEN FROM WEB PAGE
-
-*/
-
-/*$(document).ready(function() {
-    $("#b1").click(function(){
-        alert("button");
-    });
-});
-*/
 
 $(document).ready(function(){
     $('#login_form').on('submit', function(e){
@@ -18,7 +7,7 @@ $(document).ready(function(){
         var uname = $('#login_form').serializeArray()[0].value;
         var pword = $('#login_form').serializeArray()[1].value;
         console.log(uname);
-        axios.post("/teachers/login", {
+        axios.post("/teachers/", {
           email: uname,
           password: pword
         })
@@ -37,19 +26,3 @@ $(document).ready(function(){
 
     });
 });
-
-$(document).ready(function(){
-    $('#Register').click(function(){
-       window.location.href="/signup.html";
-    });
-  });
-
-
-function GitHub(){
-  axios.get('https://api.github.com/users/' + 'AakarshM')
-    .then(function(response){
-      console.log(response.data); // ex.: { user: 'Your User'}
-      console.log(response.status); // ex.: 200
-    });
-
-}

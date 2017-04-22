@@ -310,7 +310,8 @@ app.put('/questionasked', teacherAuth, function (req, res) {
     })
       //TEACHER SOCKET:
       socket.on('createConnection', function(data){ //data received from 'on'
-        var roomData = data; // {room: id, classname: cs123}
+        var roomData = data.room; // {room: id, classname: cs123}
+        var roomID = roomData;
         arrayOfRooms.push(data);
           socket.join(roomID);
       });
@@ -327,12 +328,13 @@ app.put('/questionasked', teacherAuth, function (req, res) {
 
       socket.on('join', function (data) { //data is {room: id, classname: cs123}
         var roomFound = arrayOfRooms.filter(function (roomObject) {
-          return roomObject.room == data.room && roomObject.classname == data.classname;
+          return roomObject != 'F' && roomObject.room == data.room && roomObject.classname == data.classname;
         })
+        console.log(roomFound);
         if(roomFound.length > 0){
-          socket.join(data);
+          socket.join(data.room);
           socket.emit('successJoiningRoom', {server: 'Successfully joined room'});
-          socket.broadcast.to(data).emit('student', '');
+          io.to(data.room).emit('student', '');
         } else{
           socket.emit('failedJoiningRoom', {server: 'Room does not exist, unable to join or wrong classroom'});
         }
