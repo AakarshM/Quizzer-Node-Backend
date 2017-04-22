@@ -6,16 +6,12 @@
     <title>Live Session</title>
 </head>
 <body onLoad="onCreate()">
-  <div id="react-container" class="container">
-    <h1>Live Session</h1>
-  </div>
-
   <div class="container">
     <form id="contact">
       <h3>Send Question Form</h3>
       <h4>Transmit a questiont to your class</h4>
       <fieldset>
-        <p> Option A: </p> <input placeholder="Option A"  name="a" tabindex="1" type="text" required autofocus>
+        <p> Option A: </p> <id="optionA" input placeholder="Option A"  name="a" tabindex="1" type="text" required autofocus>
       </fieldset>
       <fieldset>
       <p> Option B: </p>   <input placeholder="Option B" name="b" tabindex="2" type="text" required>
@@ -38,7 +34,9 @@
     <form class="remove-form" id="contact">
       <input name="correct" placeholder="Correct Answer: (DONT put in until the end (don't show to students))" type="text" tabindex="6" >
        <button name="remove" type="submit" id="remove-button" data-submit="...Re  moving">Remove Question from Session</button>
-       <button name="refresh" type="submit" id="contact-submit" data-submit="...Refreshing">Clear</button>
+    </form>
+    <form class="clear-form" id="contact">
+      <button name="refresh" type="submit" id="contact-submit" data-submit="...Refreshing">Clear</button>
     </form>
   </div>
 

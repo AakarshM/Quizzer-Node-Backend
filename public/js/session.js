@@ -46,11 +46,21 @@ $(document).ready(function(){
               }
             }
 
-
         //socket.emit();
     });
 });
 
+
+
+$(document).ready(function(){
+    $('.clear-form').on('submit', function(e){ //question form
+        e.preventDefault();
+        console.log('Clear requested');
+        var optionA = document.getElementById("optionA");
+        optionA.value = "";
+
+    });
+});
 
 
 //SOCKET
