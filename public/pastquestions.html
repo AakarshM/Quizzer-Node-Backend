@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="/css/courses.css">
+</head>
+<body onLoad="classListRequest()">
+    <div class="container">
+      <p>
+        <label for="new-task">Add Course</label><input id="new-task" type="text"><button>Add</button>
+      </p>
+
+      <h3>Courses</h3>
+      <ul id="incomplete-tasks">
+        <li></li>
+        <li class="editMode"></li>
+
+      </ul>
+
+<!--      <h3>Completed</h3>
+      <ul id="completed-tasks">
+        <li></li>
+      </ul>
+    </div> -->
+
+
+  </body>
+  <script type="text/javascript" src="./js/courses.js"> </script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <!-- USE THE /CREATESESSION SOCKET IN ANOTHER HTML FILE when you generate actual session -->
+
+
+
+
+</html>

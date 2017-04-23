@@ -202,6 +202,16 @@ app.get('/classlist/teacher', teacherAuth, function (req, res) {
 
 });
 
+app.get('/pastquestions/', teacherAuth, function (req, res) {
+  var currentTeacher = req.currentTeacher;
+  var email = currentTeacher.email;
+  pastquestions.find({
+    instructor: email
+  }).then((response) => {
+    res.json(response);
+  });
+});
+
 
 ////////// ANSWER MANAGER
 
