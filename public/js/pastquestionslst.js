@@ -31,17 +31,25 @@ function postCourseRequest(courseName){
     });
 };
 
+
+var cList;
+
+
+ var questionNames;
+
+  var questiondIDS;
+
 function classListRequest(){
-   axios.get('/pastquestions/', config)
+/*   axios.get('/pastquestions/', config)
      .then(function(response){
-       console.log(JSON.stringify(response.data)); // ex.: { user: 'Your User'}
+       //console.log(JSON.stringify(response.data)); // ex.: { user: 'Your User'}
        console.log(response.status); // ex.: 200
 
-      var cList = response.map(function (element) {
+      cList = response.data.map(function (element) {
           return element.course;
       });
 
-      idList = response.map(function (element) {
+      idList = response.data.map(function (element) {
         return element._id;
       })
        for(var i = 0; i < cList.length; i++){
@@ -53,7 +61,35 @@ function classListRequest(){
 
 
      });
+     */
+
+
+     var questionJSON = sessionStorage.getItem("questions");
+     console.log(questionJSON);
+
+     var questionJSONObject = JSON.parse(questionJSON);
+
+     var questionsArray = questionJSONObject.questions;
+
+      questionNames = questionsArray.map(function (element) {
+       return element.question;
+     });
+
+      questiondIDS = questionsArray.map(function (element) {
+       return element._id;
+     })
+
+     for(var i = 0; i < questionNames.length; i++){
+       //console.log(questionNames[i]);
+      var listItem = createNewTaskElement(questionNames[i]);
+       //Append listItem to incompleteTasksHolder
+       incompleteTasksHolder.appendChild(listItem);
+       bindTaskEvents(listItem, taskCompleted);
+     }
 }
+
+
+
 
 
 // Problem: User interaction doesn't provide desired results.
@@ -72,7 +108,7 @@ var createNewTaskElement = function(taskString) {
   var listItem = document.createElement("li");
 
   //input (checkbox)
-  var checkBox = document.createElement("input"); // checkbox
+//  var checkBox = document.createElement("input"); // checkbox
   //label
   var label = document.createElement("label");
   //input (text)
@@ -80,27 +116,27 @@ var createNewTaskElement = function(taskString) {
   //button.edit
   var editButton = document.createElement("button");
   //button.delete
-   var deleteButton = document.createElement("button");
+  // var deleteButton = document.createElement("button");
 
       //Each element needs modifying
 
-  checkBox.type = "checkbox";
+  //checkBox.type = "checkbox";
   editInput.type = "text";
 
-   editButton.innerText = "Start Session";
+   editButton.innerText = "Details";
   editButton.className = "edit";
-  deleteButton.innerText = "Delete";
-  deleteButton.className = "delete";
+//  deleteButton.innerText = "Delete";
+//  deleteButton.className = "delete";
 
   label.innerText = taskString;
 
 
       // each element needs appending
-  listItem.appendChild(checkBox);
+//  listItem.appendChild(checkBox);
   listItem.appendChild(label);
   listItem.appendChild(editInput);
   listItem.appendChild(editButton);
-  listItem.appendChild(deleteButton);
+//  listItem.appendChild(deleteButton);
 
 
 
@@ -144,19 +180,20 @@ var editTask = function() {
 
   var classSelected = label.innerText.toString();
   var indexOfSelected = -1;
-  for(var i = 0; i < cList.length; i++){
-    if(cList[i] == classSelected){
+  for(var i = 0; i < questionNames.length; i++){
+    if(questionNames[i] == classSelected){
       indexOfSelected = i;
       break;
     }
   }
 
-  var IDofSelected = idList[indexOfSelected];
-  sessionStorage.setItem("IDofSelected", IDofSelected);
+  var IDofSelected = questiondIDS[indexOfSelected];
+
+  console.log("Question: " + questionNames[indexOfSelected] + "  ID: " + questiondIDS[indexOfSelected]);
   //var ran5 = 10000+Math.round(Math.floor()*90000);
 
 
-  window.location.href="/session.html";
+  //window.location.href="/session.html";
 
 /*  var containsClass = listItem.classList.contains("editMode");
     //if the class of the parent is .editMode
@@ -210,16 +247,16 @@ var bindTaskEvents = function(taskListItem, checkBoxEventHandler) {
   //select taskListItem's children
   var checkBox = taskListItem.querySelector("input[type=checkbox]");
   var editButton = taskListItem.querySelector("button.edit");
-  var deleteButton = taskListItem.querySelector("button.delete");
+  //var deleteButton = taskListItem.querySelector("button.delete");
 
   //bind editTask to edit button
   editButton.onclick = editTask;
 
   //bind deleteTask to delete button
-  deleteButton.onclick = deleteTask;
+//  deleteButton.onclick = deleteTask;
 
   //bind checkBoxEventHandler to checkbox
-  checkBox.onchange = checkBoxEventHandler;
+  //checkBox.onchange = checkBoxEventHandler;
 }
 
 

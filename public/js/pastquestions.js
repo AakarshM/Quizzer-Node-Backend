@@ -15,6 +15,8 @@ var idList = [];
 
 var resultList = [];
 
+var cList;
+
 //////////////
 
 function postCourseRequest(courseName){
@@ -34,20 +36,21 @@ function postCourseRequest(courseName){
 };
 
 function classListRequest(){
-   axios.get('/pastquestions/', config)
+   axios.get('/pastquestions', config)
      .then(function(response){
        console.log(JSON.stringify(response.data)); // ex.: { user: 'Your User'}
        console.log(response.status); // ex.: 200
 
-       for(var i = 0; i < response.length; i++){
-         resultList[i] = response[i];
+       for(var i = 0; i < response.data.length; i++){
+         resultList[i] = response.data[i];
+         console.log(response.data[i]);
        }
 
-      var cList = response.map(function (element) {
+      cList = response.data.map(function (element) {
           return element.course;
       });
 
-      idList = response.map(function (element) {
+      idList = response.data.map(function (element) {
         return element._id;
       })
        for(var i = 0; i < cList.length; i++){
@@ -148,21 +151,29 @@ var editTask = function() {
   var editInput = listItem.querySelector("input[type=text]")
   var label = listItem.querySelector("label");
 
-  var classSelected = label.innerText.toString();
+  var classSelected = label.innerText.toString().replace(/\s+/, "").toLowerCase();
   var indexOfSelected = -1;
   for(var i = 0; i < cList.length; i++){
     if(cList[i] == classSelected){
       indexOfSelected = i;
+
+        console.log(cList[i] + "   Index: " + indexOfSelected);
       break;
     }
   }
 
+
   var IDofSelected = idList[indexOfSelected];
   //console.log(IDofSelected);
 
-  var selectedObject = resultList[IDofSelected];
+ console.log("Length: " + resultList.length);
+
+  console.log("Index of selected: " + IDofSelected);
+  var selectedObject = resultList[indexOfSelected];
 
   var selectedObjectString =  JSON.stringify(selectedObject); //json string
+
+  console.log(selectedObject);
 
   sessionStorage.setItem("questions", selectedObjectString);
 
@@ -170,7 +181,7 @@ var editTask = function() {
   //var ran5 = 10000+Math.round(Math.floor()*90000);
 
 
-  window.location.href="/session.html";
+  window.location.href="/pastquestionslst.html";
 
 /*  var containsClass = listItem.classList.contains("editMode");
     //if the class of the parent is .editMode
