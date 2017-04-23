@@ -287,7 +287,7 @@ app.put('/questionasked', teacherAuth, function (req, res) {
     'archives.teacher': teacher
   }, {
       $inc: {
-        "archives.$.total": 1
+        "archives.$.total": 1 //# questions
       }
   },  {multi: true}).then(function () {
       res.status(200).send();
@@ -307,7 +307,11 @@ app.put('/questionasked', teacherAuth, function (req, res) {
 
     socket.on('disconnect', function () {
        console.log("User has disconnected");
+       socket.emit('studentLeft', {
+         status: "student left"
+       });
     })
+
       //TEACHER SOCKET:
       socket.on('createConnection', function(data){ //data received from 'on'
         var roomData = data.room; // {room: id, classname: cs123}
@@ -354,6 +358,10 @@ app.put('/questionasked', teacherAuth, function (req, res) {
           {server: "Time limit has passed, your final answer was sent",
           correct_answer: correct_ans
             });
+      });
+
+      socket.on('disconnectStudent', function () {
+        socket.disconnect();
       });
 
       socket.on('sendAnswer', function(answerParams){ //answer received by server

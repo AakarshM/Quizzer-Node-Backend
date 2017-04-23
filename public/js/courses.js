@@ -14,6 +14,7 @@ var config = {
 //////////////
 
 function postCourseRequest(courseName){
+  courseName = courseName.replace(/\s/g, '').toLowerCase();
   axios.post(postCourseRoute,{
     course: courseName
   }, {
@@ -110,11 +111,16 @@ var addCourse = function (){
 var addTask = function() {
   console.log("Add task...");
   //Create a new list item with the text from #new-task:
-  var listItem = createNewTaskElement(taskInput.value);
-  postCourseRequest(taskInput.value);
-  //Append listItem to incompleteTasksHolder
-  incompleteTasksHolder.appendChild(listItem);
-  bindTaskEvents(listItem, taskCompleted);
+  if(taskInput.value != ""){
+    var listItem = createNewTaskElement(taskInput.value);
+    postCourseRequest(taskInput.value);
+    //Append listItem to incompleteTasksHolder
+    incompleteTasksHolder.appendChild(listItem);
+    bindTaskEvents(listItem, taskCompleted);
+  } else{
+    alert("No course name entered");
+  }
+
 
   taskInput.value = "";
 }
