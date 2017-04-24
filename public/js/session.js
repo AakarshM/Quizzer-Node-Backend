@@ -180,6 +180,13 @@ socket.on('student', function(){
   console.log('Student joined session');
   var studentCount = document.getElementById("studentCount");
   studentCount.innerText = "Students: " + count;
+});
+
+socket.on('studentLeft', function (data) {
+  console.log(data.status);
+  --count;
+  var studentCount = document.getElementById("studentCount");
+  studentCount.innerText = "Students: " + count;
 })
 
 

@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="/css/courses.css">
 </head>
 <body onLoad="classListRequest()">
+
     <div class="container">
+      <input id="clickMe" type="button" value="Past Archives" onclick="doFunction();" />
       <p>
         <label for="new-task">Add Course</label><input id="new-task" type="text"><button>Add</button>
       </p>
@@ -25,6 +28,11 @@
 
 
   </body>
+  <script type="text/javascript">
+    function doFunction(){
+      window.location.href="/pastquestions.html";
+    }
+  </script>
   <script type="text/javascript" src="./js/courses.js"> </script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <!-- USE THE /CREATESESSION SOCKET IN ANOTHER HTML FILE when you generate actual session -->

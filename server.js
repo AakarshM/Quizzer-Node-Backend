@@ -370,8 +370,10 @@ app.put('/questionasked', teacherAuth, function (req, res) {
             });
       });
 
-      socket.on('disconnectStudent', function () {
-        socket.disconnect();
+      socket.on('disconnectStudent', function (data) {
+        io.to(data.room).emit('studentLeft', {
+          status: "student left"
+        });
       });
 
       socket.on('sendAnswer', function(answerParams){ //answer received by server

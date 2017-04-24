@@ -3,6 +3,7 @@
 ////////////AUTH STUFF
 
 
+
 var token = sessionStorage.getItem("authHeader");
 
 var postCourseRoute = "/teachers/archive";
@@ -12,6 +13,9 @@ var config = {
 };
 
 //////////////
+
+
+/////////////
 
 function postCourseRequest(courseName){
   courseName = courseName.replace(/\s/g, '').toLowerCase();

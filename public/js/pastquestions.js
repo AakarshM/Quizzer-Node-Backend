@@ -96,7 +96,7 @@ var createNewTaskElement = function(taskString) {
   checkBox.type = "checkbox";
   editInput.type = "text";
 
-   editButton.innerText = "Start Session";
+   editButton.innerText = "View Question List";
   editButton.className = "edit";
   deleteButton.innerText = "Delete";
   deleteButton.className = "delete";

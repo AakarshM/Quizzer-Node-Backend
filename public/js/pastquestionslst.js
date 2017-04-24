@@ -38,6 +38,7 @@ var cList;
  var questionNames;
 
   var questiondIDS;
+  var questionsArray;
 
 function classListRequest(){
 /*   axios.get('/pastquestions/', config)
@@ -69,7 +70,7 @@ function classListRequest(){
 
      var questionJSONObject = JSON.parse(questionJSON);
 
-     var questionsArray = questionJSONObject.questions;
+      questionsArray = questionJSONObject.questions;
 
       questionNames = questionsArray.map(function (element) {
        return element.question;
@@ -189,11 +190,16 @@ var editTask = function() {
 
   var IDofSelected = questiondIDS[indexOfSelected];
 
-  console.log("Question: " + questionNames[indexOfSelected] + "  ID: " + questiondIDS[indexOfSelected]);
+//  console.log("Question: " + questionNames[indexOfSelected] + "  ID: " + questiondIDS[indexOfSelected]);
+
+var selectedQuestionStr = JSON.stringify(questionsArray[indexOfSelected]);
+sessionStorage.setItem("selectedQuestionPast", selectedQuestionStr);
+
+  console.log("Selected: " + JSON.stringify(questionsArray[indexOfSelected]));
   //var ran5 = 10000+Math.round(Math.floor()*90000);
 
 
-  //window.location.href="/session.html";
+  window.location.href="/specificquestion.html";
 
 /*  var containsClass = listItem.classList.contains("editMode");
     //if the class of the parent is .editMode
