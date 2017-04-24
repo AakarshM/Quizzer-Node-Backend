@@ -3,7 +3,7 @@ var http = require('http');
 var methodOverride = require('method-override');
 var path = require('path')
 var bodyParser = require('body-parser');
-var { student, teacher, client, pastquestions } = require('./db/mongoose.js')
+var { student, teacher, client, pastquestions, attendance } = require('./db/mongoose.js')
 var socketio = require('socket.io');
 var { studentAuth, teacherAuth } = require('./middleware.js')
 var mongoose = require('mongoose');
@@ -153,7 +153,15 @@ app.post('/teachers/archive', teacherAuth, function (req, res) { //create new ar
         "courses": course
       }
     }).then(function () {
+      var newAttendance = new attendance({
+          instructor: current_email,
+          course: course,
+          attendance: 0
+      });
+      newAttendance.save().then(()=>{
         res.json(archive);
+      });
+
     });
   });
 });
@@ -292,16 +300,26 @@ app.post('/summaryclass', studentAuth, function (req, res) {
 app.put('/questionasked', teacherAuth, function (req, res) {
   var className = req.body.course;
   var teacher = req.currentTeacher.email; //email
-  student.update({
+
+/*  student.update({
     'archives.classname': className,
     'archives.teacher': teacher
   }, {
       $inc: {
-        "archives.$.total": 1 //# questions
+        'archives.$.total': 1 //# questions
       }
-  },  {multi: true}).then(function () {
-      res.status(200).send();
-  })
+  },  {multi: true}).then(function (result) {
+    res.json(result);
+      //res.status(200).send();
+  })*/
+  attendance.update({
+    instructor: teacher,
+    course: className
+  }, {
+    $inc:{
+      attendance: 1
+    }
+  });
 });
 
 

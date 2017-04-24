@@ -149,6 +149,9 @@ $(document).ready(function(){
     $('#close-button').on('click', function(e){ //question form
         e.preventDefault();
         console.log("Closing session");
+        socket.emit('closeConnection', {
+          room: classObject.id
+        });
         socket.emit('disconnect');
         window.location.href="/courses.html";
 

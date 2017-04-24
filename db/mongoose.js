@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var student = require('./students.js');
 var teacher = require('./teachers.js');
 var pastquestions = require('./pastquestions.js');
+var attendance = require('./attendance.js');
 
 //Set up MongoDB
 mongoose.Promise = global.Promise;
@@ -15,5 +16,6 @@ db.client = mongoose;
 db.student = student;
 db.teacher = teacher;
 db.pastquestions = pastquestions;
+db.attendance = attendance;
 
 module.exports = db;
