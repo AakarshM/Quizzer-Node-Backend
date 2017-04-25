@@ -8,6 +8,8 @@ var questionPresent = false;
 
 var token = sessionStorage.getItem("authHeader");
 
+sessionStorage.setItem("room_id_graph", classObject.id);
+
 var postCourseRoute = "/teachers/archive";
 
 var config = {
@@ -68,8 +70,10 @@ $(document).ready(function(){
               }, config).then((response) =>{
                   console.log(response.status);
                   axios.put('/teachers/archive', archiveObject, config).then((response) => {
-                      console.log(response.status);
+                      console.log(response);
                   })
+              }).catch((e)=>{
+                console.log(e);
               });
 
 
@@ -102,6 +106,14 @@ $(document).ready(function () {
         room: classObject.id
       });
       questionPresent = true;
+  })
+})
+
+
+$(document).ready(function () {
+  $('#graph-button').on('click', function (e) {
+      e.preventDefault();
+      window.open("graph2.html");
   })
 })
 
@@ -192,10 +204,6 @@ socket.on('studentLeft', function (data) {
   studentCount.innerText = "Students: " + count;
 })
 
-
-socket.on('studentAnswer', function (data) {
-  console.log(data);
-})
 
 socket.on('disconnect', function () {
     console.log('Disconnected from server');

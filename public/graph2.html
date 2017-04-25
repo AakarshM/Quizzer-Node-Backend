@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="/css/graph2.css">
+  <title>Graph</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/graph_socket.js"></script>
+
+</head>
+<body onload="onCreate()">
+  <section>
+    <label for = "updating-chart">
+Class Distribution<br />
+</label>
+  <canvas id="updating-chart" width="200" height="200"></canvas>
+
+</section>
+
+</body>
+
+<script type="text/javascript">
+var canvas = document.getElementById('updating-chart'),
+    ctx = canvas.getContext('2d'),
+    startingData = {
+      labels: ["A", "B", "C", "D"],
+      datasets: [
+          {
+             label: "Option",
+             fillColor: "rgba(206, 70, 90, 1)",
+             strokeColor: "rgba(220,220,220,0.8)",
+              pointColor: "rgba(220,220,220,1)",
+              pointStrokeColor: "#fff",
+              backgroundColor: [
+                "rgba(206, 70, 90, 1)",
+                "rgba(53, 180, 248, 1)",
+                "rgba(250, 100, 25, 1)",
+                "rgba(201, 195, 254, 1)"
+
+              ],
+              data: [0, 0, 0, 0],
+              options: {
+              scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true,
+                        min: 0
+                    }
+                  }]
+               }
+            }
+          }
+      ]
+    };
+
+var myLiveChart = new Chart(ctx,{
+  type: 'bar',
+  data: startingData,
+  responsive: true,
+  maintainAspectRatio: true
+});
+
+/*setInterval(function(){
+  // Get a random index point
+  var indexToUpdate = Math.round(Math.random() * startingData.labels.length);
+
+  // Update one of the points in the second dataset
+  myLiveChart.data.datasets[0].data[indexToUpdate] += 1;
+
+  myLiveChart.update();
+}, 500);*/
+
+</script>
+</html>

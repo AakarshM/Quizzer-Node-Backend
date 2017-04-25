@@ -115,6 +115,24 @@ app.get('/student/info', studentAuth, function(req, res){
     console.log(e);
     res.status(400).send(e);
   });
+});
+
+app.get('/student/info/attendance', function (req, res) {
+  var course = req.query.course;
+  var instructor = req.query.instructor; //email
+
+  attendance.findOne({
+    course: course,
+    instructor: instructor,
+  }).then((resp)=>{
+    if(!resp){
+      res.send("nill");
+    } else{
+      res.send(JSON.stringify(resp));
+    }
+  }).catch((e)=>{
+    res.status(400).send(e);
+  });
 
 });
 
@@ -229,12 +247,15 @@ app.get('/classlist', studentAuth, function (req, res) {
     student.findOne({email: email}).then(function (studentProfile) {
       var archivesArray = studentProfile.archives;
       var arrayToSend = [];
+      var instructorArray = [];
       archivesArray.forEach(function(specificArchive){
           arrayToSend.push(specificArchive.classname);
+          instructorArray.push(specificArchive.teacher);
       });
-      arrayToSend.sort();
+      //arrayToSend.sort();
       var objectToSend = {
-          classList: arrayToSend
+          classList: arrayToSend,
+          instructorList: instructorArray
       }
       res.json(objectToSend);
     })
@@ -312,13 +333,15 @@ app.put('/questionasked', teacherAuth, function (req, res) {
     res.json(result);
       //res.status(200).send();
   })*/
-  attendance.update({
+  attendance.findOneAndUpdate({
     instructor: teacher,
     course: className
   }, {
     $inc:{
       attendance: 1
     }
+  }).then((resp)=>{
+    res.json(resp);
   });
 });
 
@@ -339,6 +362,13 @@ app.put('/questionasked', teacherAuth, function (req, res) {
          status: "student left"
        });
     })
+
+      //GRAPH SOCKET:
+
+      socket.on('joinGraph', function (data) {
+          socket.join(data.id); //data = {id: room_id}
+          socket.emit('joinedGraph');
+      });
 
       //TEACHER SOCKET:
       socket.on('createConnection', function(data){ //data received from 'on'
@@ -386,6 +416,7 @@ app.put('/questionasked', teacherAuth, function (req, res) {
           {server: "Time limit has passed, your final answer was sent",
           correct_answer: correct_ans
             });
+          io.to(room).emit('closedGraph');
       });
 
       socket.on('disconnectStudent', function (data) {
@@ -400,6 +431,17 @@ app.put('/questionasked', teacherAuth, function (req, res) {
           var room = answerParams.room;
           io.to(room).emit('studentAnswer', {answer: answer}); //will be used for graph
       });
+
+      socket.on('previouslyAnsweredSendAnswer', function (answerParams) {
+        var answer = answerParams.answer; //new answer
+        var previous = answerParams.previous;
+        var room = answerParams.room;
+        io.to(room).emit('studentPreviouslyAnswered', {
+          answer: answer,
+          previous: previous
+        });
+      })
+
 
       socket.on('studentJoined', function(data){
         console.log("data");

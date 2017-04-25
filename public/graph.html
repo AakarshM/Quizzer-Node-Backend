@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body >
+
+<canvas id="myChart" width="400" height="400"></canvas>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.0-rc.2/Chart.js"></script>
+    <script type="text/javascript">
+    var ctx = document.getElementById("myChart").getContext("2d");
+    var data = {
+        labels: ["A", "B", "C", "D"],
+        datasets: [{
+            label: "Product A",
+            fillColor: "rgba(220,220,220,0.5)",
+            strokeColor: "rgba(220,220,220,0.8)",
+
+            data: [25, 75, 65, 66]
+        } /*, {
+            label: "Product B",
+            fillColor: "rgba(151,187,205,0.5)",
+            strokeColor: "rgba(151,187,205,0.8)",
+
+            data: [75, 25]
+        }*/]
+
+    }
+    var myBarChart = new Chart(ctx, {
+      type: 'bar'
+    });
+    setTimeout(function(){
+      myBarChart.data.datasets[0].data[0] = 80//Math.random() * 100;
+
+      myBarChart.update();
+    //  myBarChart.addData([40], "IBM");
+    },1000);
+    </script>
+
+  </body>
+
+</html>
