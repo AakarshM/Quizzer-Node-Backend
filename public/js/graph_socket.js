@@ -27,7 +27,7 @@ socket.on('joinedGraph', function () {
 })
 
 socket.on('closedGraph', function () {
-  for(var i = 0; i < 3; i++){
+  for(var i = 0; i < 4; i++){
     myLiveChart.data.datasets[0].data[i] = 0;
   }
   myLiveChart.update();
@@ -40,10 +40,6 @@ var optionMap = {
     "d": 3
 }
 
-window.onbeforeunload = function () {
-    alert('aa');
-};
-
 function updateFunction(optionVar){
   // Update one of the points in the second dataset
   myLiveChart.data.datasets[0].data[optionMap[optionVar]] =
@@ -53,8 +49,13 @@ function updateFunction(optionVar){
 }
 
 function previousUpdateFunction(newOption, oldOption) {
+  if(myLiveChart.data.datasets[0].data[optionMap[oldOption]] <= 0){
     myLiveChart.data.datasets[0].data[optionMap[oldOption]] =
-      myLiveChart.data.datasets[0].data[optionMap[optionVar]] - 1;
+    myLiveChart.data.datasets[0].data[optionMap[oldOption]] + 1
+    ;
+  }
+    myLiveChart.data.datasets[0].data[optionMap[oldOption]] =
+      myLiveChart.data.datasets[0].data[optionMap[oldOption]] - 1;
 
    myLiveChart.data.datasets[0].data[optionMap[newOption]] =
      myLiveChart.data.datasets[0].data[optionMap[newOption]] + 1;

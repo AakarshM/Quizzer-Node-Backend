@@ -7,7 +7,11 @@ If you want to test it out, clone [Backend repo](https://github.com/AakarshM/Qui
 
 **Important**: You must install MongoDB, Node.js, Express.js, Socket.io, path.js, and Nodemon to run the server (the server uses Nodemon to refresh on change)
 
-**Client**: Clone [Android repo](https://github.com/AakarshM/Quizzer-Android-Client) and install the `apk`. If you want to try out the teacher part (hand in hand), while you `npm start` on the backend repo, simply navigate to `localhost:3000` and create an account/login and go with the flow.
+**Client**: Clone [Android repo](https://github.com/AakarshM/Quizzer-Android-Client) and install the `apk`. If you want to try out the teacher part (hand in hand), while you `npm start` on the backend repo, simply navigate to `localhost:3000` and create an account/login and go with the flow. Before you do all this, deploy a HTTP/HTTPS server `ngrok http 3000` using ngrok and replace the `BASE_URL` in `Constants.java` in the Android app with the url you are given through ngrok. 
+
+# Demo:
+
+![alt text](https://vimeo.com/214461719 "Logo Title Text 1")
 
 # Time frame
 Took me a while to finish this project since its quite extensive and detail oriented. An estimate time frame is January 2017 - April/May 2017
