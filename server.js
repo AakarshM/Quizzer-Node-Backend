@@ -364,7 +364,6 @@ app.put('/questionasked', teacherAuth, function (req, res) {
     })
 
       //GRAPH SOCKET:
-
       socket.on('joinGraph', function (data) {
           socket.join(data.id); //data = {id: room_id}
           socket.emit('joinedGraph');
