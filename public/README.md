@@ -35,7 +35,7 @@ Everytime a professor asks a questions and then removes it (i.e. the question is
 The client app for students is an Android app and the client for teachers is a website/webapp.
 
 # What is the tech?
-Node.js is used for the HTTP API, Socket.io is used (client + server) for real time connections/sessions. Java is used to build the Android client and the usual, HTML/CSS/Javascript/jQuery is used for the web front end. MongoDB is used for the database.
+Node.js is used for the HTTP API, Socket.io is used (client + server) for real time connections/sessions. Java is used to build the Android client and the usual, HTML/CSS/Javascript/jQuery is used for the web front end; for the real-time graph, chart.js is used to "prettify." MongoDB is used for the database.
 
 # Important
 I've used a bunch of online templates for the web UI to make it look decent, credits are places everywhere and also on the UI (while browsing) itself.

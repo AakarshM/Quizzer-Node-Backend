@@ -2,6 +2,11 @@ var socket = io();
 
 var room_id = sessionStorage.getItem("room_id_graph");
 
+if(room_id == null){
+  console.log("No token");
+  window.location.href="/redirect.html";
+}
+
 function onCreate(){
   //updateFunction('a');
 }

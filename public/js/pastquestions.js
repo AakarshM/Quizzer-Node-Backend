@@ -5,6 +5,11 @@
 
 var token = sessionStorage.getItem("authHeader");
 
+if(token == null){
+  console.log("No token");
+  window.location.href="/redirect.html";
+}
+
 var postCourseRoute = "/teachers/archive";
 
 var config = {

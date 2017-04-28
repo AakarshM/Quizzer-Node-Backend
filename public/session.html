@@ -1,4 +1,12 @@
 <!DOCTYPE html>
+<script type="text/javascript">
+var token = sessionStorage.getItem("authHeader");
+
+if(token == null){
+  console.log("No token");
+  window.location.href="/redirect.html";
+}
+</script>
 <html lang="en">
 <head>
     <meta charset="UTF-8">

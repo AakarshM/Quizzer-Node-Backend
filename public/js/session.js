@@ -1,3 +1,11 @@
+var token = sessionStorage.getItem("authHeader");
+
+if(token == null){
+  console.log("No token");
+  window.location.href="/redirect.html";
+}
+
+
 var socket = io();
 
 var count = 0; //student count
@@ -6,7 +14,7 @@ var classObject = JSON.parse(sessionStorage.getItem("classObject"));
 
 var questionPresent = false;
 
-var token = sessionStorage.getItem("authHeader");
+
 
 sessionStorage.setItem("room_id_graph", classObject.id);
 
