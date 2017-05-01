@@ -7,6 +7,7 @@ var { student, teacher, client, pastquestions, attendance } = require('./db/mong
 var socketio = require('socket.io');
 var { studentAuth, teacherAuth } = require('./middleware.js')
 var mongoose = require('mongoose');
+var nodemailer = require('nodemailer');
 
 //Initialize express and socket.io
 var app = express();
@@ -17,6 +18,24 @@ app.use(methodOverride());
 app.use(bodyParser.json());
 app.use(express.static(publicPath));
 var arrayOfRooms = ['F']; //dummy F
+
+//Create SMTP settings
+
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'EMAIL',
+        pass: 'PASS'
+    }
+});
+
+var mailOptions = {
+    from: '"Quizzer Admin" <admin@quizzer.aakarshm.com>', // sender address
+    to: 'TEMPEMAIL', // list of receivers
+    subject: 'Password Reset', // Subject line
+    text: 'TEMP', // plain text body
+    html: '<b>TEMP</b>' // html body
+};
 
 
 //Create ROUTES:
