@@ -1,5 +1,6 @@
 var express = require('express');
 var http = require('http');
+var https = require('https');
 var methodOverride = require('method-override');
 var path = require('path')
 var bodyParser = require('body-parser');
@@ -8,6 +9,14 @@ var socketio = require('socket.io');
 var { studentAuth, teacherAuth } = require('./middleware.js')
 var mongoose = require('mongoose');
 var nodemailer = require('nodemailer');
+var jwt = require('jsonwebtoken');
+var bcrypt = require('bcryptjs');
+var fs = require('fs');
+
+var options = {
+  key: fs.readFileSync('./key.pem'),
+  cert: fs.readFileSync('./cert.pem')
+};
 
 //Initialize express and socket.io
 var app = express();
@@ -24,19 +33,82 @@ var arrayOfRooms = ['F']; //dummy F
 var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'EMAIL',
-        pass: 'PASS'
+        user: 'ail.com',
+        pass: ''
     }
 });
 
 var mailOptions = {
     from: '"Quizzer Admin" <admin@quizzer.aakarshm.com>', // sender address
-    to: 'TEMPEMAIL', // list of receivers
+    to: '', // list of receivers
     subject: 'Password Reset', // Subject line
     text: 'TEMP', // plain text body
-    html: '<b>TEMP</b>' // html body
+    html: '<a>TEMP</a>' // html body
 };
 
+
+//*****************   TEACHER AUTH RESET METHOD     !            *****************
+
+
+app.get('/verifytest', function (req, res) {
+    var token = req.query.token;
+    jwt.verify(token, 'quizzerpassreset123', function(err, decoded) {
+  if (err) {
+    res.json(err);
+  }
+    res.json(decoded);
+  });
+});
+
+
+app.get('/resetrequest', function (req, res) {
+    var email = req.query.email;
+
+    var token = jwt.sign({
+      data: email
+    },
+    'quizzerpassreset123', {
+        expiresIn: 60*10
+    }); //10 minute expiry JWT
+
+    mailOptions.to = email.toString();
+    //mailOptions.text = "Your unique password reset link holds for 10 minutes.";
+    mailOptions.html = '<a href=' + 'http://localhost:3000/' + token + '>Click</a>'
+    transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+        return console.log(error);
+    }
+  //  console.log();
+    res.json('Message %s sent: %s', info.messageId, info.response);
+});
+});
+
+app.post('/resetpassword/teacher', function (req, res) {
+
+var token = req.query.token;
+
+  jwt.verify(token, 'quizzerpassreset123', function(err, decoded) {
+if (err) {
+  res.json(err);
+}
+  else{
+    var newPass = req.body.password;
+    var email = decoded.data;
+    var salt = bcrypt.genSaltSync(10);
+    var hash = bcrypt.hashSync(newPass, salt);
+    teacher.findOneAndUpdate({email: email}, {
+      password: hash
+    }, {updated: true}).then((user) => {
+        //reset password here
+        res.json(user);
+    });
+  }
+  });
+});
+
+
+
+///////////////////////////////// OTHER ROUTES
 
 //Create ROUTES:
 app.get('/root', function (req, res) {
@@ -474,6 +546,6 @@ app.put('/questionasked', teacherAuth, function (req, res) {
 
 
 //Create server
-server.listen(3000, function () {
+server.listen(8443, function () {
   console.log("Listening on 3000");
 })
